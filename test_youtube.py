@@ -28,8 +28,8 @@ class TestAppium(unittest.TestCase):
             self.driver.quit()
 
     def test_search(self) -> None:
-        text_to_find = 'Hamilton Pilot Pioneer'
-        
+        text_to_find = 'Teddy Baldassarre'
+
         allow_btn = self.driver.find_element(by=AppiumBy.ID, value='com.android.permissioncontroller:id/permission_allow_button')
         allow_btn.click()
         WebDriverWait(self.driver, 30).until(
@@ -48,19 +48,20 @@ class TestAppium(unittest.TestCase):
         videos_btn = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.TextView[@resource-id="com.google.android.youtube:id/text" and @text="Videos"]')
         videos_btn.click()
         WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.XPATH, '//android.view.ViewGroup[contains(@content-desc,"Hamilton - Khaki Aviation")]')))
+            EC.visibility_of_element_located((By.XPATH, f'//android.view.ViewGroup[contains(@content-desc,"{text_to_find}")]')))
          
         result = self.driver.find_element(by=AppiumBy.XPATH, 
-                                               value='//android.view.ViewGroup[contains(@content-desc,"Hamilton - Khaki Aviation")]')
+                                               value=f'//android.view.ViewGroup[contains(@content-desc,"{text_to_find}")]')
 
         result_text = result.get_attribute('content-desc')
         list_for_assert = list(text_to_find.split(" "))
+        print(f'text to find: {list_for_assert}')
         list_from_result = list(result_text.split(" "))
+        print(f'list with values for assert: {list_from_result}')
 
         for i in range(len(list_for_assert)):
              match = list_for_assert[i]
              assert match in list_from_result
-    
 
 if __name__ == '__main__':
     unittest.main()
