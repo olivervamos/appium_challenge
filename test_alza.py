@@ -6,7 +6,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-capabilities = dict(
+capabilities_for_installation = dict(
+    platformName='Android',
+    automationName='uiautomator2',
+    deviceName='Android',
+    language='en',
+    locale='US'
+)
+
+capabilities_for_run = dict(
     platformName='Android',
     automationName='uiautomator2',
     deviceName='Android',
@@ -20,9 +28,12 @@ appium_server_url = 'http://localhost:4723'
 
 class TestAppium(unittest.TestCase):
     def setUp(self) -> None:
-        self.driver = webdriver.Remote(appium_server_url, capabilities)
+        self.driver = webdriver.Remote(appium_server_url, capabilities_for_installation)
+        self.driver.install_app(app_path='resources\Alza_10.12.2_Apkpure.apk')
+        self.driver = webdriver.Remote(appium_server_url, capabilities_for_run)
 
     def tearDown(self) -> None:
+        self.driver.remove_app('cz.alza.eshop')
         if self.driver:
             self.driver.quit()
 
