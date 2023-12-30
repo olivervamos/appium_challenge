@@ -4,8 +4,6 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
 
 capabilities = dict(
     platformName='Android',
@@ -54,13 +52,13 @@ class TestAppium(unittest.TestCase):
                                                value=f'//android.view.ViewGroup[contains(@content-desc,"{text_to_find}")]')
 
         result_text = result.get_attribute('content-desc')
-        list_for_assert = list(text_to_find.split(" "))
-        print(f'text to find: {list_for_assert}')
+        expected_list = list(text_to_find.split(" "))
+        print(f'text to find: {expected_list}')
         list_from_result = list(result_text.split(" "))
         print(f'list with values for assert: {list_from_result}')
 
-        for i in range(len(list_for_assert)):
-             match = list_for_assert[i]
+        for i in range(len(expected_list)):
+             match = expected_list[i]
              assert match in list_from_result
 
 if __name__ == '__main__':
