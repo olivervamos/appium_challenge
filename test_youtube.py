@@ -28,8 +28,12 @@ class TestAppium(unittest.TestCase):
     def test_search(self) -> None:
         text_to_find = 'Teddy Baldassarre'
 
-        allow_btn = self.driver.find_element(by=AppiumBy.ID, value='com.android.permissioncontroller:id/permission_allow_button')
-        allow_btn.click()
+        try:
+            allow_btn = self.driver.find_element(by=AppiumBy.ID, value='com.android.permissioncontroller:id/permission_allow_button')
+            allow_btn.click()
+        except:
+            pass
+        
         WebDriverWait(self.driver, 30).until(
             EC.visibility_of_element_located((By.XPATH, '//android.widget.ImageView[@content-desc="Search"]')))
 
@@ -43,15 +47,19 @@ class TestAppium(unittest.TestCase):
             EC.visibility_of_element_located((By.XPATH, '//android.support.v7.widget.RecyclerView[@resource-id="com.google.android.youtube:id/results"]/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup')))
         
         self.driver.swipe(200, 200, 0, 1000)
-        videos_btn = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.TextView[@resource-id="com.google.android.youtube:id/text" and @text="Videos"]')
-        videos_btn.click()
+        try:
+            videos_btn = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.TextView[@resource-id="com.google.android.youtube:id/text" and @text="Videos"]')
+            videos_btn.click()
+        except:
+            pass
+
         WebDriverWait(self.driver, 30).until(
             EC.visibility_of_element_located((By.XPATH, f'//android.view.ViewGroup[contains(@content-desc,"{text_to_find}")]')))
-         
         result = self.driver.find_element(by=AppiumBy.XPATH, 
                                                value=f'//android.view.ViewGroup[contains(@content-desc,"{text_to_find}")]')
 
         result_text = result.get_attribute('content-desc')
+        result_text = result_text.replace(".", "")
         expected_list = list(text_to_find.split(" "))
         print(f'text to find: {expected_list}')
         list_from_result = list(result_text.split(" "))

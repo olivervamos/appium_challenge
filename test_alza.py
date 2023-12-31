@@ -29,11 +29,14 @@ appium_server_url = 'http://localhost:4723'
 class TestAppium(unittest.TestCase):
     def setUp(self) -> None:
         self.driver = webdriver.Remote(appium_server_url, capabilities_for_installation)
+        print(">>>preparing and installation alza apk...")
         self.driver.install_app(app_path='resources\Alza_10.12.2_Apkpure.apk')
         self.driver = webdriver.Remote(appium_server_url, capabilities_for_run)
+        print(">>>alza apk is succesfull installed...")
 
     def tearDown(self) -> None:
         self.driver.remove_app('cz.alza.eshop')
+        print(">>>alza apk is uninstalled...")
         if self.driver:
             self.driver.quit()
 
