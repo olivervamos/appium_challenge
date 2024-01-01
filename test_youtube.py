@@ -27,8 +27,10 @@ class TestAppium(unittest.TestCase):
 
     def test_search(self) -> None:
         text_to_find = 'Teddy Baldassarre'
-
+        
         try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, 'com.android.permissioncontroller:id/permission_allow_button')))
             allow_btn = self.driver.find_element(by=AppiumBy.ID, value='com.android.permissioncontroller:id/permission_allow_button')
             allow_btn.click()
         except:
